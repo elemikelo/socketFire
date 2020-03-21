@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SocketFire</title>
+</head>
+<body>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+<script>
+  const socket = io(`http://${location.host}`);
+
+  function sendTimestamp () {
+    const timestamp = new Date().getTime()
+
+    socket.emit('channel', timestamp)
+  }
+
+  setInterval(sendTimestamp, 10)
+
+  socket.on('channel', (message) => {
+    document.body.innerHTML = `
+    <h1>Latency between client and server 😘</h1>
+    <h3>${JSON.stringify(message, null, 4)}</h3>
+    `
+  })
+</script>
+</html>
